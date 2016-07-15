@@ -41,14 +41,14 @@ post '/post_status' do
 end
 
 post '/update/:id' do
-	@status = Status.find_by(id: params[:id])
+	find_status
 	@status.status = params[:update_status]
 	@status.save
 	erb :"static/index"
 end
 
 get '/update/:id' do
-	@status = Status.find_by(id: params[:id])
+	find_status
 	if @status
 		erb :"static/status"
 	else
@@ -97,7 +97,13 @@ get '/add_friend/:id' do
 end
 
 get '/delete/:id' do
-	@status = Status.find_by(id: params[:id])
+	find_status
 	@status.delete
 	erb :"static/index"
 end
+
+private
+	
+	def find_status
+		@status = Status.find_by(id: params[:id])
+	end
