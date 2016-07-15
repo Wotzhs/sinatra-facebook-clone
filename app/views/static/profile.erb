@@ -1,0 +1,32 @@
+<h1><%= @user.name %></h1>
+<% if current_user.friends.find_by(friend_id: @user.id) %>
+	<a href="/add_friend/<%= @user.id %>">Friend</a>
+<% elsif @user.id != current_user.id %>
+	<a href="/add_friend/<%= @user.id %>">Add friend!</a>
+<% end %>
+<br><br>
+<h1><%= @user.name %>'s friends</h1>
+<% if !@user.friends[0].nil? %>
+	<% @user.friends.each_with_index do |f, i| %>
+		<a href="/profile/<%= @user.friends[i].friend_id %>" ><%= User.find_by(id: @user.friends[i].friend_id).name %></a>
+	<% end %>
+<% else %>
+	<p><%= @user.name %> doesn't have any friends yet!</p>
+<% end %>
+
+<br><br>
+
+<% @status = @user.statuses %>
+<h1><%= @user.name %>'s posts</h1>
+<% if current_user.id == @user.id || current_user.friends.find_by(friend_id: @user.id) %>
+	<% @status.each_with_index do |s, index| %>
+	<div class="well">
+		<a href="/profile/<%= current_user.id %>"><%= @user.name %></a>
+		<h1><%= @status[index].status %></h1>
+		<p><%= @status[index].likes.count %> likes</p>
+		<a href="/like/<%= @status[index].id %>">like</a>
+	</div>
+	<% end %>
+<% else %>
+	<h1>You are unable to view <%= @user.name %>'s post because you are not friends yet</h1>
+<% end %>

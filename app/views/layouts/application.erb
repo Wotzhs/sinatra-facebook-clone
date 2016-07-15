@@ -1,9 +1,33 @@
 <html>
 	<head>
-		<title>Facebook Clone</title>
+		<title><%= @title %></title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="/css/application.css" rel="stylesheet">
 	</head>
 	<body>
+		<nav>
+			<% if !logged_in? %>
+				<form method='post', action='/signin'>
+					<input name="user_email" placeholder="Email">
+					<input type="password" name="user_password" placeholder="Password">
+					<button>Sign in</button>
+				</form>
+			<% else %>
+				<a href="/">sFacebook</a>
+				<form>
+					<input placeholder="Search sFacebook">
+				</form>
+				<a href="/profile/<%= current_user.id %>"><%= current_user.name %></a>
+				<a href="/signout">Log out</a>
+			<% end %>
+		</nav>
 
 		<%= yield %>
+
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/application.js"></script>
+
 	</body>
 </html>

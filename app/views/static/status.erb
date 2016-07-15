@@ -1,0 +1,9 @@
+<h1>Update status</h1>
+<div id="new_status">
+<form method='post' action='/update/<%= @status.id %>'>
+	<input type="text" class="escape">
+	<textarea name="update_status" class="form-control"><%= @status.status %></textarea>
+	<button class="btn btn-default"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+	<a href="/" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> Cancel</a>
+</form>
+</div>

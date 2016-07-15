@@ -1,2 +1,35 @@
 <h1>Hello World</h1>
 <p>See Me in views/static/index.html.erb</p>
+
+<div id="new_status">
+	<form method='post' action='/post_status'>
+		<textarea name="status_update" placeholder="Type something so your friends can see what are you eating now or something, c'mon man"></textarea>
+		<button class="btn btn-primary" disabled="true">Post</button>
+	</form>
+</div>
+
+
+<div id="stories">
+	<% Status.all.order('id DESC').each do |s| %>
+		<% if current_user.id == s.user_id || current_user.friends.find_by(friend_id: s.user_id) %>
+			<div class="well">
+				<a href="/profile/<%= s.user.id %>"><%= s.user.name %></a>
+				<p><%= s.created_at.strftime("%d %b %Y") %></p>
+				<h1><%= s.status %></h1>
+				<% if s.created_at != s.updated_at %>
+					<p>Updated</p>
+				<% end %>
+				<% if s.user.id === current_user.id %>
+					<a href="/update/<%= s.id %>" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</a>
+					<a href="/delete/<%= s.id %>" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+				<% end %>
+				<p><%= s.likes.count%> likes</p>
+				<% if Like.find_by(status_id: s.id, user_id: current_user.id) %>
+					<a href="/like/<%= s.id %>" class="btn btn-default"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Liked</a>
+				<% else %>
+					<a href="/like/<%= s.id %>" class="btn btn-default"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</a>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+</div>
